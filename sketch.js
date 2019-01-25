@@ -180,19 +180,21 @@ function gotWeather(weather) {
   e = map(vis_km, 0.01, 30, 200, 0);
   f = map(min, timeToMin(sunrise), timeToMin(sunset), -50, 550)
 
-  console.log('Ort',name);
-  console.log('Land',country);
-  console.log('Temperatur',temp_c);
-  console.log('Windgeschwindigkeit',wind_kph);
-  console.log('Niederschlag',precip_mm);
-  console.log('Wolkendichte',cloud);
-  console.log('Sicht',vis_km);
-  console.log('Sonnenstand',f);
+
+//CONSOLE
+  //console.log('Ort',name);
+  //console.log('Land',country);
+  //console.log('Temperatur',temp_c);
+  //console.log('Windgeschwindigkeit',wind_kph);
+  //console.log('Niederschlag',precip_mm);
+  //console.log('Wolkendichte',cloud);
+  //console.log('Sicht',vis_km);
+  //console.log('Sonnenstand',f);
 
 
-  console.log('Sonnenaufgang', timeToMin(sunrise), 'Sonnenuntergang', timeToMin(sunset));
+  //console.log('Sonnenaufgang', timeToMin(sunrise), 'Sonnenuntergang', timeToMin(sunset));
 
-  console.log('Minuten', min);
+  //console.log('Minuten', min);
 
 
 
