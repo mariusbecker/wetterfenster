@@ -3,7 +3,7 @@
 
 //Variablen definieren
 //Mit Werten gefüllt werden diese in der Funktion gotWeather
-let a, b, c, d, e, f, temp_c, wind_kph, precip_mm, cloud, vis_km, sunrise, sunset, min, input, button, time;
+let a, b, c, d, e, f, temp_c, wind_kph, precip_mm, cloud, vis_km, sunrise, sunset, min, input, button, time, name, country;
 let key='916f8b6ae77d4b1d90c92037191101';
 let city="zürich";
 
@@ -25,6 +25,7 @@ function setup() {
     button = createButton('GO!');
     button.position(input.x + input.width +10, 15);
     button.mousePressed(reloadJson);
+
 
 
   //Dokumentation
@@ -87,12 +88,14 @@ function dateToMin(time) {
 function draw() {
 
 
+
+
+
   var h = hour();
   var hr = map(h, 0, 24, -250, 750)
 
 
   background(0, 150, 255);
-
 
 //MOUNTAIN
 fill(a, 255, a);
@@ -138,7 +141,9 @@ noStroke();
 
 
 
-
+  textSize(16);
+  fill(0);
+  text('' + name + ', ' + country +'', 10, 490);
 
 
 
@@ -155,6 +160,9 @@ function gotWeather(weather) {
   vis_km=weather.current.vis_km;
   sunrise=weather.forecast.forecastday[0].astro.sunrise;
   sunset=weather.forecast.forecastday[0].astro.sunset;
+  name=weather.location.name;
+  country=weather.location.country;
+
 
   timeToMin(weather.forecast.forecastday[0].astro.sunrise)
   timeToMin(weather.forecast.forecastday[0].astro.sunset)
@@ -172,6 +180,8 @@ function gotWeather(weather) {
   e = map(vis_km, 0.01, 30, 200, 0);
   f = map(min, timeToMin(sunrise), timeToMin(sunset), -50, 550)
 
+  console.log('Ort',name);
+  console.log('Land',country);
   console.log('Temperatur',temp_c);
   console.log('Windgeschwindigkeit',wind_kph);
   console.log('Niederschlag',precip_mm);
