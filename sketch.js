@@ -3,9 +3,9 @@
 
 //Variablen definieren
 //Mit Werten gefüllt werden diese in der Funktion gotWeather
-let a, b, c, d, e, temp_c, wind_kph, precip_mm, cloud, vis_km, sunrise, sunset;
+let a, b, c, d, e, f, temp_c, wind_kph, precip_mm, cloud, vis_km, sunrise, sunset, min, input, button, time;
 let key='916f8b6ae77d4b1d90c92037191101';
-let city='zürich'
+let city="zürich";
 
 function setup() {
   createCanvas(500, 500);
@@ -18,10 +18,30 @@ function setup() {
 
     let url = 'https://api.apixu.com/v1/forecast.json?key='+key+'&q='+city+'&days=1';
 
+
+    input = createInput();//https://p5js.org/examples/dom-input-and-button.html
+    input.position(50, 15);
+
+    button = createButton('GO!');
+    button.position(input.x + input.width +10, 15);
+    button.mousePressed(reloadJson);
+
+
   //Dokumentation
     // https://www.apixu.com/doc/forecast.aspx
   loadJSON(url, gotWeather);
 
+}
+
+
+
+function reloadJson(){
+
+    let city = input.value();
+
+    let url = 'https://api.apixu.com/v1/forecast.json?key='+key+'&q='+city+'&days=7';
+
+    loadJSON(url, gotWeather);
 }
 
 //SPLIT TIME
@@ -46,6 +66,23 @@ function timeToMin(time) {
 
 }
 
+//SPLIT DATE
+function dateToMin(time) {
+  min = 0;
+
+  let allSplit = time.split(" ");
+  // allSplit = ["2019-01-24", "19:33"]
+
+
+  let timeSplit = allSplit[1].split(":");
+  // timeSplit = ["19", "33"]
+
+  min += 60 * parseInt(timeSplit[0]) // add hours
+  min += parseInt(timeSplit[1]) // add minutes
+
+}
+
+
 
 function draw() {
 
@@ -58,7 +95,7 @@ function draw() {
 
 
 //MOUNTAIN
-fill(70, 180, a);
+fill(a, 255, a);
 noStroke();
   triangle(250, 100, 0, 500, 500, 500);
 
@@ -70,7 +107,7 @@ quad(0, 0, 500, 0, 500, 500, 0, 500);
 //SUN
 fill(255, 255, 200);
 noStroke();
-  ellipse(hr, 0, 100, 100);
+  ellipse(f, 0, 100, 100);
 
 //RAIN
 fill(0, 70, 100, 100);
@@ -80,6 +117,14 @@ noStroke();
   triangle(250-c, 250-c, 250+c, 250-c, 250, 250+c);
   triangle(375-c, 250-c, 375+c, 250-c, 375, 250+c);
   triangle(500-c, 250-c, 500+c, 250-c, 500, 250+c);
+
+  triangle(62-c, 375-c, 62+c, 375-c, 62, 375+c);
+  triangle(188-c, 375-c, 188+c, 375-c, 188, 375+c);
+  triangle(307-c, 375-c, 307+c, 375-c, 307, 375+c);
+  triangle(438-c, 375-c, 438+c, 375-c, 438, 375+c);
+
+
+
 
 //CLOUDS
 fill(255, 255, 255, 180);
@@ -97,11 +142,10 @@ noStroke();
 
 
 
-
-
-
-
 }
+
+
+
 
 function gotWeather(weather) {
   temp_c=weather.current.temp_c;
@@ -115,22 +159,31 @@ function gotWeather(weather) {
   timeToMin(weather.forecast.forecastday[0].astro.sunrise)
   timeToMin(weather.forecast.forecastday[0].astro.sunset)
 
+  dateToMin(weather.location.localtime);
+
+
 
 
   //MAP
   a = map(temp_c, -10, 40, 255, 60);
   b = map(wind_kph, 0, 100, 0, 0.1);
-  c = map(precip_mm, 0, 100, 0, 250);
+  c = map(precip_mm, 0.1, 50, 0, 500);
   d = map(cloud, 0, 100, 0, 255);
-  e = map(vis_km, 0.01, 280, 200, 0);
-  f = map(sunrise, 0, 1440, )
+  e = map(vis_km, 0.01, 30, 200, 0);
+  f = map(min, timeToMin(sunrise), timeToMin(sunset), -50, 550)
 
-  console.log(temp_c);
-  console.log(wind_kph);
-  console.log(precip_mm);
-  console.log(cloud);
-  console.log(vis_km);
-  console.log(weather)
+  console.log('Temperatur',temp_c);
+  console.log('Windgeschwindigkeit',wind_kph);
+  console.log('Niederschlag',precip_mm);
+  console.log('Wolkendichte',cloud);
+  console.log('Sicht',vis_km);
+  console.log('Sonnenstand',f);
 
-  console.log(timeToMin(sunrise), timeToMin(sunset))
+
+  console.log('Sonnenaufgang', timeToMin(sunrise), 'Sonnenuntergang', timeToMin(sunset));
+
+  console.log('Minuten', min);
+
+
+
 }
